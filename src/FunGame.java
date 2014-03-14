@@ -9,6 +9,12 @@ public class FunGame {
             msg += "!";
             printMsg(msg);
         }
+
+        System.out.println("Output complete :) Starting Game...");
+
+        Platformer game = new Platformer();
+        game.run();
+
     }
 
     private static void printMsg(String msg) {
