@@ -4,7 +4,7 @@
 public class FunGame {
 
     public static void main (String[] args) {
-        String msg = "Howdy Everyone!";
+        String msg = "Howdy Everyone! This game is gonna rock!";
         for(int i=0; i<5; i++) {
             msg += "!";
             printMsg(msg);
