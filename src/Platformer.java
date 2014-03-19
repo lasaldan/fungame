@@ -130,7 +130,6 @@ public class Platformer implements Runnable{
 
         try {
             foreground = ImageIO.read(new File("resources/gameFG.png"));
-            System.out.println("Image Loaded");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error Loading Image");
@@ -138,7 +137,6 @@ public class Platformer implements Runnable{
 
         try {
             midBg = ImageIO.read(new File("resources/gameMid.png"));
-            System.out.println("Image Loaded");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error Loading Image");
@@ -146,7 +144,6 @@ public class Platformer implements Runnable{
 
         try {
             background = ImageIO.read(new File("resources/background.jpg"));
-            System.out.println("Image Loaded");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error Loading Image");
@@ -154,7 +151,6 @@ public class Platformer implements Runnable{
 
         try {
             logo = ImageIO.read(new File("resources/logo.png"));
-            System.out.println("Image Loaded");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error Loading Image");
