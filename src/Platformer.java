@@ -4,12 +4,6 @@
 
 import java.awt.Canvas;
 import java.awt.Graphics2D;
-import java.awt.Image;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
 
 
@@ -22,6 +16,7 @@ public class Platformer implements Runnable{
     long desiredFPS = 60;
 
     private double bgPos = 0;
+    ScrollingBackground2d bg2d;
 
     // how long do we want to take calculating each frame?
     long desiredDeltaLoop = (1000*1000*1000)/desiredFPS;
@@ -54,17 +49,22 @@ public class Platformer implements Runnable{
     @Override
     public void run() {
 
-        //Sound bgSound = new Sound("concept/music/Ouroboros.wav");
-        Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
+        Sound bgSound = new Sound("concept/music/Ouroboros.wav");
+        //Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
         bgSound.loop(Clip.LOOP_CONTINUOUSLY);
+
+        bg2d = new ScrollingBackground2d();
+        bg2d.addLayer("resources/background.jpg", 0, 0, -1);
+        bg2d.addLayer("resources/gameMid.png", 0, 450, -2);
+        bg2d.addLayer("resources/gameFG.png", 0, 600, -4);
+        bg2d.addLayer("resources/logo.png", 300, 250, 0);
+
 
         long beginLoopTime;
         long endLoopTime;
         long currentUpdateTime = System.nanoTime();
         long lastUpdateTime;
         long deltaLoop;
-
-        loadGraphics();
 
         // Main game loop
         while(running){
@@ -93,8 +93,6 @@ public class Platformer implements Runnable{
                     System.out.println("Cannot Sleep");
                 }
             }
-
-            // Do it all over again, until the game quits
         }
     }
 
@@ -107,72 +105,14 @@ public class Platformer implements Runnable{
         canvas.getBufferStrategy().show();
     }
 
-    // Game variables
-    // keeps keyCodes of keys which are currently pressed
+    // Update the position of all the elements in the game
     protected void update(int deltaTime){
-        bgPos -= 1;
-        if(bgPos < -2000){
-            bgPos = 0;
-        }
-    }
-
-    // TODO: Build a structure/class for managing graphics
-    Image background, midBg, foreground, logo;
-    private void loadGraphics() {
-
-        /*
-        List<String> graphics = new ArrayList<String>();
-        graphics.add("resources/gameFG.png");
-        graphics.add("resources/gameMid.png");
-        graphics.add("resources/background.jpg");
-        graphics.add("resources/logo.png");
-        */
-
-        try {
-            foreground = ImageIO.read(new File("resources/gameFG.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error Loading Image");
-        }
-
-        try {
-            midBg = ImageIO.read(new File("resources/gameMid.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error Loading Image");
-        }
-
-        try {
-            background = ImageIO.read(new File("resources/background.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error Loading Image");
-        }
-
-        try {
-            logo = ImageIO.read(new File("resources/logo.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error Loading Image");
-        }
+        bg2d.update(.25,0);
     }
 
     // Draw all elements to the graphic buffer
     protected void render(Graphics2D g){
-        g.drawImage(background, (int) bgPos, 0, canvas);
-        g.drawImage(background, (int) bgPos + 2000, 0, canvas);
-
-        g.drawImage(midBg, (int) bgPos * 2, 450, canvas);
-        g.drawImage(midBg, (int) bgPos * 2 + 2000, 450, canvas);
-        g.drawImage(midBg, (int) bgPos * 2 + 4000, 450, canvas);
-
-        g.drawImage(foreground, (int) bgPos*4, 600, canvas);
-        g.drawImage(foreground, (int) bgPos*4+2000, 600, canvas);
-        g.drawImage(foreground, (int) bgPos*4+4000, 600, canvas);
-        g.drawImage(foreground, (int) bgPos*4+6000, 600, canvas);
-        g.drawImage(foreground, (int) bgPos*4+8000, 600, canvas);
-
-        g.drawImage(logo, 300, 250, canvas);
+        bg2d.draw(g,canvas);
     }
 
     public static void main(String [] args){
