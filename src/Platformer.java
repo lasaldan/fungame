@@ -51,7 +51,8 @@ public class Platformer implements Runnable{
 
         Sound bgSound = new Sound("concept/music/Ouroboros.wav");
         //Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
-        bgSound.loop(Clip.LOOP_CONTINUOUSLY);
+
+        bgSound.loop(0); // 0 means loop forever!
 
         bg2d = new ScrollingBackground2d();
         bg2d.addLayer("resources/background.jpg", 0, 0, -1);

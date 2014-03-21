@@ -48,6 +48,8 @@ public class Sound {
     }
 
     public void loop(int times) {
+        if( times == 0 )
+            times = Clip.LOOP_CONTINUOUSLY;
         clip.loop(times);
     }
 }
