@@ -4,10 +4,6 @@
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 
 public class Platformer implements Runnable{
@@ -18,7 +14,6 @@ public class Platformer implements Runnable{
 
     long desiredFPS = 60;
 
-    private double bgPos = 0;
     ScrollingBackground2d bg2d;
 
     // how long do we want to take calculating each frame?
@@ -31,6 +26,11 @@ public class Platformer implements Runnable{
 
     // Where we'll be drawing all our graphics and such
     Canvas canvas;
+
+    // Used to write and manage TTF fonts on the game canvas
+    GameFont fontWriter;
+
+    // Used to keep track of the state of the keyboard
     KeyControl keys;
 
     // This sets up our game environment
@@ -46,11 +46,7 @@ public class Platformer implements Runnable{
         // Add a keyboard listener to the window
         keys = new KeyControl();
         canvas.addKeyListener(keys);
-/*
-        InputStream is = new FileInputStream("resources/fonts/computer_pixel-7.ttf");
-        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-        font = font.deriveFont(Font.BOLD,12f);
-*/
+
     }
 
 
@@ -63,11 +59,22 @@ public class Platformer implements Runnable{
 
         bgSound.loop(0); // 0 means loop forever!
 
+        // Create a new Background manager and add some parallax layers
         bg2d = new ScrollingBackground2d();
         bg2d.addLayer("resources/graphics/background.jpg", 0, 0, -1, true);
         bg2d.addLayer("resources/graphics/gameMid.png", 0, 450, -2, true);
         bg2d.addLayer("resources/graphics/gameFG.png", 0, 600, -4, true);
+
+        // Add the logo as a layer that doesn't repeat or scroll
         bg2d.addLayer("resources/graphics/logo.png", 300, 150, 0, false);
+
+        // Set the font we want to use in the game and pass in a reference to the canvas to draw on
+        fontWriter = new GameFont("resources/fonts/computer_pixel-7.ttf", canvas);
+
+        // Set default font weight, color and size
+        fontWriter.setWeight(Font.BOLD);
+        fontWriter.setColor(253,187,67);
+        fontWriter.setSize(36f);
 
         long beginLoopTime;
         long endLoopTime;
@@ -116,53 +123,33 @@ public class Platformer implements Runnable{
 
     // Update the position of all the elements in the game
     protected void update(int deltaTime){
+
+        // Check if the LEFT keyboard key is held down
         if(keys.isPressed(KeyEvent.VK_LEFT))
             bg2d.update(-1,0);
+
+        // Check if the RIGHT keyboard key is held down
         if(keys.isPressed(KeyEvent.VK_RIGHT))
             bg2d.update(1,0);
     }
 
     // Draw all elements to the graphic buffer
     protected void render(Graphics2D g){
+
+        // Update all parallax background layers
         bg2d.draw(g,canvas);
-        Color orange = new Color(253,187,67);
 
-        RenderingHints rh =
-                new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
-
-        rh.put(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-
-        g.setRenderingHints(rh);
-
-        try {
-            InputStream is = new FileInputStream("resources/fonts/computer_pixel-7.ttf");
-            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-            font = font.deriveFont(Font.PLAIN,36f);
-            g.setColor(orange);
-            g.setFont(font);
-
-            g.drawString("Start New Game", 400, 400);
-            g.drawString("Load Game", 400, 430);
-            g.drawString("Options", 400, 460);
-            g.drawString("Exit", 400, 490);
-        }
-        catch (FileNotFoundException e) {
-
-        }
-        catch (FontFormatException e) {
-
-        }
-        catch (IOException e) {
-
-        }
-
-
+        // Draw text to the screen
+        fontWriter.drawString("Start New Game", 400, 400);
+        fontWriter.drawString("Load Game", 400, 430);
+        fontWriter.drawString("Options", 400, 460);
+        fontWriter.drawString("Exit", 400, 490);
     }
 
+    /*
     public static void main(String [] args){
         Platformer ex = new Platformer();
         new Thread(ex).start();
     }
+    */
 }
