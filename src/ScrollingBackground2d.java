@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ecmraven on 3/19/14.
+ * Created by lasaldan on 3/19/14.
  */
 public class ScrollingBackground2d {
 

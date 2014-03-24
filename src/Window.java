@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 /**
- * Created by ecmraven on 3/19/14.
+ * Created by lasaldan on 3/19/14.
  */
 public class Window {
 

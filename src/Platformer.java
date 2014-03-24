@@ -2,9 +2,12 @@
  * Created by lasaldan on 3/14/14.
  */
 
-import java.awt.Canvas;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class Platformer implements Runnable{
@@ -43,7 +46,11 @@ public class Platformer implements Runnable{
         // Add a keyboard listener to the window
         keys = new KeyControl();
         canvas.addKeyListener(keys);
-
+/*
+        InputStream is = new FileInputStream("resources/fonts/computer_pixel-7.ttf");
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        font = font.deriveFont(Font.BOLD,12f);
+*/
     }
 
 
@@ -60,7 +67,7 @@ public class Platformer implements Runnable{
         bg2d.addLayer("resources/background.jpg", 0, 0, -1, true);
         bg2d.addLayer("resources/gameMid.png", 0, 450, -2, true);
         bg2d.addLayer("resources/gameFG.png", 0, 600, -4, true);
-        bg2d.addLayer("resources/logo.png", 300, 250, 0, false);
+        bg2d.addLayer("resources/logo.png", 300, 150, 0, false);
 
         long beginLoopTime;
         long endLoopTime;
@@ -118,6 +125,40 @@ public class Platformer implements Runnable{
     // Draw all elements to the graphic buffer
     protected void render(Graphics2D g){
         bg2d.draw(g,canvas);
+        Color orange = new Color(253,187,67);
+
+        RenderingHints rh =
+                new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+
+        rh.put(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+
+        g.setRenderingHints(rh);
+
+        try {
+            InputStream is = new FileInputStream("resources/fonts/computer_pixel-7.ttf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+            font = font.deriveFont(Font.PLAIN,36f);
+            g.setColor(orange);
+            g.setFont(font);
+
+            g.drawString("Start New Game", 400, 400);
+            g.drawString("Load Game", 400, 430);
+            g.drawString("Options", 400, 460);
+            g.drawString("Exit", 400, 490);
+        }
+        catch (FileNotFoundException e) {
+
+        }
+        catch (FontFormatException e) {
+
+        }
+        catch (IOException e) {
+
+        }
+
+
     }
 
     public static void main(String [] args){

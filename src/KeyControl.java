@@ -1,5 +1,5 @@
 /**
- * Created by ecmraven on 3/19/14.
+ * Created by lasaldan on 3/19/14.
  */
 
 import java.awt.event.KeyAdapter;
@@ -51,7 +51,6 @@ public class KeyControl extends KeyAdapter {
             for (int i : eventKeys) {
                 keys.put(i,false);
             }
-
         }
 
         public boolean isPressed(int key) {
@@ -68,10 +67,6 @@ public class KeyControl extends KeyAdapter {
         public void setKeyReleased(int key) {
             if(eventKeys.contains(key))
                 keys.put(key,false);
-        }
-
-        public boolean isKeyPressed(int key){
-            return keys.get(key);
         }
 
         public String getKeyMap() {

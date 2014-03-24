@@ -1,0 +1,14 @@
+Classes to be used in the Delivery Drone game
+
+Drone
+    int hp
+    double xVelocity
+    double yVelocity
+    Skin skin
+    List defensiveModules
+    List offensiveModules
+
+    impact(Object,
+
+
+Upgrade
