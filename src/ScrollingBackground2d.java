@@ -11,19 +11,17 @@ import java.util.List;
 public class ScrollingBackground2d {
 
     List<Layer> layers;
-    double offsetX;
-    double offsetY;
 
     public ScrollingBackground2d() {
         layers = new ArrayList<Layer>();
     }
 
-    public void addLayer(String path, double initialX, double initialY, double ratio)  {
+    public void addLayer(String path, double initialX, double initialY, double ratio, boolean repeat)  {
 
         Image tempImage;
         try {
             tempImage = ImageIO.read(new File(path));
-            layers.add(new Layer(tempImage, initialX, initialY, ratio));
+            layers.add(new Layer(tempImage, initialX, initialY, ratio, repeat));
         } catch (IOException e) {
             System.out.println("Error Loading Image (" + path + ")");
             e.printStackTrace();
@@ -32,14 +30,20 @@ public class ScrollingBackground2d {
     }
 
     public void draw(Graphics2D g, Canvas canvas) {
-        for(Layer l : layers)
+        for(Layer l : layers) {
+            int imgW = l.getImage().getWidth(canvas);
+            if(Math.abs(l.x) >= imgW)
+                l.x = 0;
             g.drawImage(l.image, (int) l.x, (int) l.y, canvas);
+
+            if(l.repeat) {
+                g.drawImage(l.image, (int) l.x+imgW, (int) l.y, canvas);
+                g.drawImage(l.image, (int) l.x-imgW, (int) l.y, canvas);
+            }
+        }
     }
 
     public void update(double dx, double dy) {
-        //offsetX += dx;
-        //offsetY += dy;
-
         for(Layer l : layers ) {
             l.shift(dx, dy);
         }
@@ -51,12 +55,18 @@ public class ScrollingBackground2d {
         private double slideRatio;
         private double x;
         private double y;
+        private boolean repeat;
 
-        public Layer(Image _image, double _x, double _y, double _ratio) {
+        public Layer(Image _image, double _x, double _y, double _ratio, boolean _repeat) {
             image = _image;
             slideRatio = _ratio;
             x = _x;
             y = _y;
+            repeat = _repeat;
+        }
+
+        public Image getImage() {
+            return image;
         }
 
         public void shift(double dx, double dy){

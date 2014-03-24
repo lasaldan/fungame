@@ -4,7 +4,7 @@
 
 import java.awt.Canvas;
 import java.awt.Graphics2D;
-import javax.sound.sampled.Clip;
+import java.awt.event.KeyEvent;
 
 
 public class Platformer implements Runnable{
@@ -28,6 +28,7 @@ public class Platformer implements Runnable{
 
     // Where we'll be drawing all our graphics and such
     Canvas canvas;
+    KeyControl keys;
 
     // This sets up our game environment
     public Platformer(){
@@ -39,8 +40,9 @@ public class Platformer implements Runnable{
         // Add a mouse listener to the window
         canvas.addMouseListener(new MouseControl());
 
-        // Add a keyboard listenr to the window
-        canvas.addKeyListener(new KeyControl());
+        // Add a keyboard listener to the window
+        keys = new KeyControl();
+        canvas.addKeyListener(keys);
 
     }
 
@@ -55,11 +57,10 @@ public class Platformer implements Runnable{
         bgSound.loop(0); // 0 means loop forever!
 
         bg2d = new ScrollingBackground2d();
-        bg2d.addLayer("resources/background.jpg", 0, 0, -1);
-        bg2d.addLayer("resources/gameMid.png", 0, 450, -2);
-        bg2d.addLayer("resources/gameFG.png", 0, 600, -4);
-        bg2d.addLayer("resources/logo.png", 300, 250, 0);
-
+        bg2d.addLayer("resources/background.jpg", 0, 0, -1, true);
+        bg2d.addLayer("resources/gameMid.png", 0, 450, -2, true);
+        bg2d.addLayer("resources/gameFG.png", 0, 600, -4, true);
+        bg2d.addLayer("resources/logo.png", 300, 250, 0, false);
 
         long beginLoopTime;
         long endLoopTime;
@@ -108,7 +109,10 @@ public class Platformer implements Runnable{
 
     // Update the position of all the elements in the game
     protected void update(int deltaTime){
-        bg2d.update(.25,0);
+        if(keys.isPressed(KeyEvent.VK_LEFT))
+            bg2d.update(-1,0);
+        if(keys.isPressed(KeyEvent.VK_RIGHT))
+            bg2d.update(1,0);
     }
 
     // Draw all elements to the graphic buffer

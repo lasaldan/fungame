@@ -26,6 +26,10 @@ public class KeyControl extends KeyAdapter {
         keys.setKeyReleased(e.getKeyCode());
     }
 
+    public boolean isPressed(int key) {
+        return keys.isPressed(key);
+    }
+
     // Subclass used by Keyboard to keep track of which keys are pressed
     private class KeyManager {
 
@@ -48,6 +52,12 @@ public class KeyControl extends KeyAdapter {
                 keys.put(i,false);
             }
 
+        }
+
+        public boolean isPressed(int key) {
+            if(eventKeys.contains(key))
+                return keys.get(key);
+            return false;
         }
 
         public void setKeyPressed(int key) {
