@@ -58,16 +58,16 @@ public class Platformer implements Runnable{
     @Override
     public void run() {
 
-        Sound bgSound = new Sound("concept/music/Ouroboros.wav");
+        Sound bgSound = new Sound("resources/sound/loops/Ouroboros.wav");
         //Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
 
         bgSound.loop(0); // 0 means loop forever!
 
         bg2d = new ScrollingBackground2d();
-        bg2d.addLayer("resources/background.jpg", 0, 0, -1, true);
-        bg2d.addLayer("resources/gameMid.png", 0, 450, -2, true);
-        bg2d.addLayer("resources/gameFG.png", 0, 600, -4, true);
-        bg2d.addLayer("resources/logo.png", 300, 150, 0, false);
+        bg2d.addLayer("resources/graphics/background.jpg", 0, 0, -1, true);
+        bg2d.addLayer("resources/graphics/gameMid.png", 0, 450, -2, true);
+        bg2d.addLayer("resources/graphics/gameFG.png", 0, 600, -4, true);
+        bg2d.addLayer("resources/graphics/logo.png", 300, 150, 0, false);
 
         long beginLoopTime;
         long endLoopTime;
