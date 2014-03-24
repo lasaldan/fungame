@@ -58,7 +58,7 @@ public class Platformer implements Runnable{
     @Override
     public void run() {
 
-        Sound bgSound = new Sound("resources/sound/loops/Ouroboros.wav");
+        Sound bgSound = new Sound("resources/sound/loops/game.wav");
         //Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
 
         bgSound.loop(0); // 0 means loop forever!
