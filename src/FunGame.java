@@ -3,10 +3,10 @@
  */
 public class FunGame {
 
-    public static void main (String[] args) {
+	public static void main (String[] args) {
 
-        Platformer game = new Platformer();
-        game.run();
+		Platformer game = new Platformer(1000/60);
+		game.run();
 
-    }
+	}
 }
