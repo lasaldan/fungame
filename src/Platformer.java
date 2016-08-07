@@ -25,6 +25,8 @@ public class Platformer extends GameLoop{
 	// end the game loop and exit the program
 	boolean running = true;
 
+	float speed = 0;
+
 	// Where we'll be drawing all our graphics and such
 	Canvas canvas;
 
@@ -58,20 +60,29 @@ public class Platformer extends GameLoop{
 	@Override
 	public void startup() {
 
-		Sound bgSound = new Sound("resources/sound/loops/game.wav");
+		Sound bgSound = new Sound("resources/sound/loops/Ouroboros.wav");
+		//Sound bgSound = new Sound("resources/sound/loops/game.wav");
 		//Sound bgSound = new Sound("concept/music/MonkeysSpinningMonkeys.wav");
 
 		bgSound.loop(0); // 0 means loop forever!
 
 		// Create a new Background manager and add some parallax layers
 		bg2d = new ScrollingBackground2d();
+		bg2d.addLayer("resources/graphics/graphPaper.png", 0, 0, -1, true);
+		bg2d.addLayer("resources/graphics/mountains.png", 0, 0, -2, true);
+		bg2d.addLayer("resources/graphics/trees.png", 0, 0, -4, true);
+		bg2d.addLayer("resources/graphics/grass.png", 0, 0, -8, true);
+		bg2d.addLayer("resources/graphics/road.png", 0, 0, -1, true);
+		bg2d.addLayer("resources/graphics/car3.png", 0, 0, 0, true);
+		/*
 		bg2d.addLayer("resources/graphics/background.jpg", 0, 0, -1, true);
 		bg2d.addLayer("resources/graphics/gameMid.png", 0, 450, -2, true);
 		bg2d.addLayer("resources/graphics/gameFG.png", 0, 600, -4, true);
 
+
 		// Add the logo as a layer that doesn't repeat or scroll
 		bg2d.addLayer("resources/graphics/logo.png", 300, 150, 0, false);
-
+		*/
 		// Set the font we want to use in the game and pass in a reference to the canvas to draw on
 		fontWriter = new GameFont("resources/fonts/computer_pixel-7.ttf", canvas);
 
@@ -97,11 +108,22 @@ public class Platformer extends GameLoop{
 
 		// Check if the LEFT keyboard key is held down
 		if(keys.isPressed(KeyEvent.VK_LEFT))
-			bg2d.update(-1,0);
+			speed -= .01;
 
 		// Check if the RIGHT keyboard key is held down
-		if(keys.isPressed(KeyEvent.VK_RIGHT))
-			bg2d.update(1,0);
+		else if(keys.isPressed(KeyEvent.VK_RIGHT))
+			speed += .01;
+
+		else if(keys.isPressed(KeyEvent.VK_DOWN))
+			speed = 0;
+
+		else if (speed > 0)
+			speed -= .01;
+
+		else if (speed < 0)
+			speed += .01;
+
+		bg2d.update(speed,0);
 	}
 
 	@Override
@@ -120,10 +142,10 @@ public class Platformer extends GameLoop{
 		bg2d.draw(g,canvas);
 
 		// Draw text to the screen
-		fontWriter.drawString("Start New Game", 400, 400);
-		fontWriter.drawString("Load Game", 400, 430);
-		fontWriter.drawString("Options", 400, 460);
-		fontWriter.drawString("Exit", 400, 490);
+		fontWriter.drawString("Speed: " + speed*10, 20, 40);
+		//fontWriter.drawString("Load Game", 400, 430);
+		//fontWriter.drawString("Options", 400, 460);
+		//fontWriter.drawString("Exit", 400, 490);
 	}
 
 }
